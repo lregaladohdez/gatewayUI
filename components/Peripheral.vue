@@ -13,11 +13,12 @@
           <button type="button" class="delete" @click="$parent.close()" />
         </header>
         <section class="modal-card-body">
-          <b-field label="UID">
+          <b-field label="UUID">
             <b-input
-              v-model="myPeripheral.uid"
-              placeholder="Peripheral UID"
-              type="number"
+              v-model="myPeripheral.uuid"
+              placeholder="Peripheral UUID"
+              type="text"
+              validation-message="Enter a valid uuid"
               required
             >
             </b-input>
@@ -83,12 +84,12 @@ export default {
       this.myPeripheral.gatewayId = this.gateway
       if (this.myPeripheral.id) {
         action = this.$axios.patch(
-          `/peripheral/${this.myPeripheral.id}`,
+          `/peripherals/${this.myPeripheral.id}`,
           this.myPeripheral
         )
       } else {
         delete this.myPeripheral.id
-        action = this.$axios.post(`/peripheral/`, this.myPeripheral)
+        action = this.$axios.post(`/peripherals/`, this.myPeripheral)
       }
       try {
         await action

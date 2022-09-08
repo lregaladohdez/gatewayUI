@@ -28,27 +28,7 @@
               <div class="control">
                 <b-taglist attached>
                   <b-tag type="text">address</b-tag>
-                  <b-tag type="is-info">{{ gateway.address }}</b-tag>
-                </b-taglist>
-              </div>
-              <div class="control">
-                <b-taglist attached>
-                  <b-tag type="text">peripherals</b-tag>
-                  <b-tag type="is-info">{{ gateway.peripheralsCount }}</b-tag>
-                </b-taglist>
-              </div>
-              <div class="control">
-                <b-taglist attached>
-                  <b-tag type="text">createdAt</b-tag>
-                  <b-tag type="is-info">{{ gateway.createdAt | date }}</b-tag>
-                </b-taglist>
-              </div>
-              <div class="control">
-                <b-taglist attached>
-                  <b-tag type="text">updatedAt</b-tag>
-                  <b-tag type="is-info">{{
-                    gateway.updatedAt | date('lll')
-                  }}</b-tag>
+                  <b-tag type="is-info">{{ gateway.ipv4 }}</b-tag>
                 </b-taglist>
               </div>
             </b-field>
@@ -73,8 +53,8 @@
         :hoverable="true"
         empty="No Peripherlas attached"
       >
-        <b-table-column v-slot="props" field="uid" label="UID">{{
-          props.row.uid
+        <b-table-column v-slot="props" field="uuid" label="UUID">{{
+          props.row.uuid
         }}</b-table-column>
         <b-table-column v-slot="props" field="vendor" label="Vendor">{{
           props.row.vendor
@@ -99,8 +79,8 @@
         </b-table-column>
         <b-table-column v-slot="props" field="createdAt" label="CreatedAt">
           {{
-            props.row.createdAt
-              ? new Date(props.row.createdAt).toLocaleDateString()
+            props.row.date
+              ? new Date(props.row.date).toLocaleDateString()
               : 'unknown'
           }}
         </b-table-column>
@@ -171,8 +151,10 @@ export default {
     async fetchData() {
       this.isModalActive = false
       try {
-        this.gateway = await this.$axios.$get('/gateway/' + this.id)
-        this.devices = this.gateway.peripherals
+        ;[this.gateway, { data: this.devices }] = await Promise.all([
+          this.$axios.$get(`/gateways/${this.id}`),
+          await this.$axios.$get(`/peripherals?gatewayId=${this.id}`),
+        ])
       } catch (error) {
         this.$buefy.toast.open({
           duration: 5000,
@@ -189,7 +171,7 @@ export default {
       try {
         const status = statusOld === 'online' ? 'offline' : 'online'
         this.isLoading = true
-        await this.$axios.patch(`/peripheral/${id}`, {
+        await this.$axios.patch(`/peripherals/${id}`, {
           status,
         })
         await this.fetchData()
@@ -214,7 +196,7 @@ export default {
         hasIcon: true,
         onConfirm: async () => {
           try {
-            await this.$axios.delete(`/peripheral/${id}`)
+            await this.$axios.delete(`/peripherals/${id}`)
             this.$buefy.toast.open({
               duration: 5000,
               queue: true,

@@ -29,10 +29,10 @@
           </b-field>
           <b-field label="Address">
             <b-input
-              v-model="myGateway.address"
+              v-model="myGateway.ipv4"
               placeholder="Gateway ipv4 address XXX.XXX.XXX.XXX"
               required
-              validation-message="Enter a valid ipv4 address XXX.XXX.XXX"
+              validation-message="Enter a valid ipv4 address XXX.XXX.XXX.XXX"
               pattern="\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b"
             >
             </b-input>
@@ -75,12 +75,12 @@ export default {
       let action = null
       if (this.myGateway.id) {
         action = this.$axios.patch(
-          `/gateway/${this.myGateway.id}`,
+          `/gateways/${this.myGateway.id}`,
           this.myGateway
         )
       } else {
         delete this.myGateway.id
-        action = this.$axios.post(`/gateway/`, this.myGateway)
+        action = this.$axios.post(`/gateways/`, this.myGateway)
       }
       try {
         await action

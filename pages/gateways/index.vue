@@ -34,20 +34,13 @@
           props.row.name
         }}</b-table-column>
         <b-table-column v-slot="props" field="address" label="Address">{{
-          props.row.address
+          props.row.ipv4
         }}</b-table-column>
-        <b-table-column v-slot="props" field="peripheralsCount" label="Devices">
+        <!-- <b-table-column v-slot="props" field="peripheralsCount" label="Devices">
           <b-tag type="is-info">{{
             props.row.peripheralsCount
           }}</b-tag></b-table-column
-        >
-        <b-table-column v-slot="props" field="createdAt" label="CreatedAt">
-          {{
-            props.row.createdAt
-              ? new Date(props.row.createdAt).toLocaleDateString()
-              : 'unknown'
-          }}
-        </b-table-column>
+        > -->
         <b-table-column v-slot="props" label="Actions">
           <a
             class="is-primary button is-light field is-centered"
@@ -121,8 +114,8 @@ export default {
     async fetchData() {
       try {
         this.isModalActive = false
-        const gateways = await this.$axios.$get('/gateway')
-        this.data = gateways
+        const gateways = await this.$axios.$get('/gateways')
+        this.data = gateways.data
         this.isLoading = false
       } catch (error) {
         this.$buefy.toast.open({
@@ -144,7 +137,7 @@ export default {
         hasIcon: true,
         onConfirm: async () => {
           try {
-            await this.$axios.delete(`/gateway/${id}`)
+            await this.$axios.delete(`/gateways/${id}`)
             this.$buefy.toast.open({
               duration: 5000,
               queue: true,
