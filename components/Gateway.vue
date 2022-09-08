@@ -107,7 +107,7 @@ export default {
           error.response.data &&
           error.response.data.message
         ) {
-          message = `${error.response.data.message}, ${error.response.data.attrNames}`
+          message = `${error.response.data.message}`
         } else if (error.response && error.response.data) {
           message = error.response.data
         }
