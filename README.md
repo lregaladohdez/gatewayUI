@@ -2,9 +2,9 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/lregaladohdez/gatewayUI)
 <!-- ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/lregaladohdez/gatewayUI/Node.js%20CI) -->
 ![GitHub top language](https://img.shields.io/github/languages/top/lregaladohdez/gatewayUI)
-Test Project for Musala Soft Gateway Assignment.
+UI for Gateway Project at https://github.com/lregaladohdez/gateway-nestjs.git please download and run
 
-The Gateway Api is Excpected to be running at **http://localhost:400**, if it it's not, please change to the correct url at line 44 of _nuxt.config.js_
+The Gateway Api is Excpected to be running at **http://localhost:4000**, if it it's not, please change to the correct url at line 44 of _nuxt.config.js_
 
 ## Build Setup
 
